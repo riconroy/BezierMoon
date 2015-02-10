@@ -15,6 +15,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
 
 
 	func application(application: UIApplication, didFinishLaunchingWithOptions launchOptions: [NSObject: AnyObject]?) -> Bool {
+		// note what we need to do when we don't have a storyboard:
 		window = UIWindow(frame: UIScreen.mainScreen().bounds)
 		window!.rootViewController = ViewController()
 		window!.makeKeyAndVisible()

@@ -29,11 +29,11 @@ class ViewController: UIViewController {
 		myImageView.frame = imageFrame
 		myImageView.center = self.view.center
 		
-		// create two bezier paths, one trivial
+		// create two bezier paths, one trivial ( it will animate between them )
 		myBezierMoon = bezierCurveWithHalfMoonOnLeft(myImageView.frame)
 		myBezierTrivial = bezierCurveTrivial(myImageView.frame)
 		
-		// start with no bite taken out
+		// start with one bezier path ( no bite taken out )
 		var shapelayerOne = CAShapeLayer()
 		shapelayerOne.path = myBezierTrivial.CGPath
 		myImageView.layer.mask = shapelayerOne
@@ -51,6 +51,7 @@ class ViewController: UIViewController {
 	}
 	
 	// when the user taps on the image
+	// todo: don't let a tap interrupt the animation
 	func myTap(sender: UITapGestureRecognizer) {
 		// println("user tapped me")
 		toggleBezierMoon()
@@ -77,6 +78,7 @@ class ViewController: UIViewController {
 		isMoonVisible = !isMoonVisible
 	}
 	
+	// first bezier path is a rectangle with a concave arc on the left side
 	func bezierCurveWithHalfMoonOnLeft(rect: CGRect) -> UIBezierPath {
 		let initialPoint = CGPoint(x: 0, y: 0)
 		let curveStart = CGPoint(x: 0, y: (rect.size.height) * (0.2))
@@ -107,6 +109,9 @@ class ViewController: UIViewController {
 		return myBezier
 	}
 	
+	// second bezier path is a rectangle, but constructed like the bezier path above
+	//  (i.e. there is an arc on the left side, but the arc has a "control point" of 0)
+	// the rectangle is then an 'analog' of the first path in its construction
 	func bezierCurveTrivial(rect: CGRect) -> UIBezierPath {
 		let initialPoint = CGPoint(x: 0, y: 0)
 		let curveStart = CGPoint(x: 0, y: (rect.size.height) * (0.2))
@@ -118,6 +123,7 @@ class ViewController: UIViewController {
 		
 		var myBezier = UIBezierPath()
 		myBezier.moveToPoint(initialPoint)
+		// for craaazy animation, take out the next two lines:
 		myBezier.addLineToPoint(curveStart)
 		myBezier.addQuadCurveToPoint(curveEnd, controlPoint: curveControl)
 		myBezier.addLineToPoint(firstCorner)
